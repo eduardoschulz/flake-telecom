@@ -3,7 +3,11 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
+let
+  kubeMasterIP = "191.4.204.200"; 
+  kubeMasterHostname = "api.kube";
+  kubeMasterAPIServerPort = 6443;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -120,12 +124,7 @@
 
   # Kubernetes Configuration
   # Master Node
-  let
-    kubeMasterIP = "191.4.204.200"; 
-    kubeMasterHostname = "api.kube";
-    kubeMasterAPIServerPort = 6443;
-  in
-  {
+
     networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
 
     services.kubernetes = {
@@ -146,7 +145,6 @@
       addons.dns.enable = true;
       kubelet.extraOpts = "--fail-swap-on=false";
     };
-  }
 
   ## For the connection between the node and master node run this aswell:
   # cat /var/lib/kubernetes/secrets/apitoken.secret #on master node
