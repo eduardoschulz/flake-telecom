@@ -33,11 +33,11 @@
 		hmConfig = {
 			eduardo = home-manager.lib.homeManagerConfiguration {
 				pkgs = import nixpkgs { inherit system; };
-				modules = [catppuccin.homeManagerModules.catppuccin stylix.homeManagerModules.stylix eduardo/homemanager/home.nix ];
+				modules = [catppuccin.homeManagerModules.catppuccin  eduardo/homemanager/home.nix ];
 			};
 			laptop = home-manager.lib.homeManagerConfiguration {
 				pkgs = import nixpkgs { inherit system; };
-				modules = [catppuccin.homeManagerModules.catppuccin stylix.homeManagerModules.stylix laptop/homemanager/home.nix ];
+				modules = [catppuccin.homeManagerModules.catppuccin laptop/homemanager/home.nix ];
 			};
 		};
 	};
