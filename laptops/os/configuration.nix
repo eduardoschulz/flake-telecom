@@ -27,6 +27,7 @@ in
     interfaces = {
 	eth0.ipv4.addresses = [{
 		address = "191.4.204.200"; #change this for every host!!
+		prefixLength = 23;
 		}];
 	};
     defaultGateway = {
