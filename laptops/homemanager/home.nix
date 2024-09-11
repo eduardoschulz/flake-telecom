@@ -47,7 +47,6 @@ in {
 			pandoc
 			texliveFull
 			pavucontrol
-			nerdfonts
 			go
 			screen
 			
