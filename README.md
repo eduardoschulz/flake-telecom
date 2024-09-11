@@ -18,6 +18,7 @@ sudo nix build .#hmConfig.laptop.activationPackage && ./result
 - [ ] Package a new version of srsRAN
 - [ ] Setup Kubernetes
 - [x] Setup Grafana
+	- [ ] fix renaming grafana demo3
 - [ ] Setup Prometheus
 - [ ] Figure out a way to passthrough argument into the config while building
 	- [ ] hostname
