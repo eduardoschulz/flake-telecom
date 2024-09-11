@@ -154,7 +154,12 @@ in
   virtualisation.docker = {
     enable = true;
   };
-
+#  service.grafana = {
+#    enable = true;
+#    domain = "grafana.demo3";
+#    port = 3000;
+#    addr = "191.4.204.204";
+#  };
 
   system.stateVersion = "24.05"; # Did you read the comment?
 
