@@ -31,7 +31,7 @@ in
 	};
     defaultGateway = {
         address = "191.4.204.1";
-	interfaces = "eth0";
+	interface = "eth0";
     };
     nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
