@@ -135,7 +135,7 @@ in
       easyCerts = true;
 	
       apiserver = { #comment this if node
-        securePort = kubeMaterAPIServerPort; #comment this if node
+        securePort = kubeMasterAPIServerPort; #comment this if node
 	advertiseAddress = kubeMasterIP; #comment this if node
       };
 
