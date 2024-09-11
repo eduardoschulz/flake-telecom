@@ -27,7 +27,7 @@
 			};
 			laptop = lib.nixosSystem {
 				inherit system;
-				modules = [ laptop/os/configuration.nix ];
+				modules = [ laptops/os/configuration.nix ];
 			};
 		};
 		hmConfig = {
@@ -37,7 +37,7 @@
 			};
 			laptop = home-manager.lib.homeManagerConfiguration {
 				pkgs = import nixpkgs { inherit system; };
-				modules = [catppuccin.homeManagerModules.catppuccin laptop/homemanager/home.nix ];
+				modules = [catppuccin.homeManagerModules.catppuccin laptops/homemanager/home.nix ];
 			};
 		};
 	};
