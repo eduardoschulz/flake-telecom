@@ -17,7 +17,7 @@ sudo nix build .#hmConfig.laptop.activationPackage && ./result
 - [ ] Create a flake for OpenAirInterface
 - [ ] Package a new version of srsRAN
 - [ ] Setup Kubernetes
-- [ ] Setup Grafana
+- [x] Setup Grafana
 - [ ] Setup Prometheus
 - [ ] Figure out a way to passthrough argument into the config while building
 	- [ ] hostname
