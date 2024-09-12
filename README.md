@@ -15,6 +15,8 @@ sudo nix build .#hmConfig.laptop.activationPackage && ./result
 
 - [ ] Package free5gc kernel module
 - [ ] Create a flake for OpenAirInterface
+- [ ] Package openairinterface5g
+    - [ ] Package a different version of asn1c
 - [ ] Package a new version of srsRAN
 - [ ] Setup Kubernetes
 - [x] Setup Grafana
