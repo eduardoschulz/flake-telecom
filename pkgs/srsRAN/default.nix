@@ -1,4 +1,5 @@
 { stdenv
+, gcc12Stdenv
 , lib
 , cmake
 , fetchFromGitHub
@@ -19,9 +20,12 @@
 , libdwg
 , libdwarf
 , doxygen
+, gcc10
 }:
 
-stdenv.mkDerivation rec {
+#(overrideCC stdenv gcc10).mkDerivation rec{
+#stdenvNoCC.mkDerivation rec {
+gcc12Stdenv.mkDerivation rec {
   pname = "srsRAN-Project";
   version = "24_04";
 
@@ -54,6 +58,7 @@ stdenv.mkDerivation rec {
 		libdwg
 		libdwarf
 		doxygen
+		gcc10
   ];
 	#"-DENABLE_WERROR=OFF" "-DENABLE_ZEROMQ=TRUE" "-DENABLE_EXPORT=TRUE"
 
