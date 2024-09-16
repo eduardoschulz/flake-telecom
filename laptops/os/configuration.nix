@@ -7,6 +7,8 @@ let
   kubeMasterIP = "191.4.204.204"; 
   kubeMasterHostname = "api.kube";
   kubeMasterAPIServerPort = 6443;
+	hostname = "demo3";
+	ipAddress = "191.4.204.204";
 in
 {
   imports =
@@ -23,13 +25,13 @@ in
   boot.loader.grub.useOSProber = true;
 
   networking = {
-    hostName = "demo3"; # Define your hostname.
+    hostName = hostname; # Define your hostname.
     usePredictableInterfaceNames = true;
 
     #wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     interfaces = {
 	eth0.ipv4.addresses = [{
-		address = "191.4.204.204"; #change this for every host!!
+		address = ipAddress; #change this for every host!!
 		prefixLength = 23;
 		}];
 	};
@@ -164,8 +166,6 @@ in
 		port = 3000;
 		addr = "191.4.204.204";
   };
-
-	
 
 
   system.stateVersion = "24.05"; # Did you read the comment?
