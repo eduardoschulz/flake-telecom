@@ -4,7 +4,7 @@
 
 { config, pkgs, ... }:
 let
-  kubeMasterIP = "191.4.204.200"; 
+  kubeMasterIP = "191.4.204.204"; 
   kubeMasterHostname = "api.kube";
   kubeMasterAPIServerPort = 6443;
 in
@@ -15,18 +15,21 @@ in
     ];
 
   # Bootloader.
+  boot.loader.systemd-boot.enable = false;
   boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/vda";
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.device = "nodev"; #must be set up to nodev if uefi
   boot.loader.grub.useOSProber = true;
 
   networking = {
-    hostName = "demo0"; # Define your hostname.
+    hostName = "demo3"; # Define your hostname.
     usePredictableInterfaceNames = true;
 
-    wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    #wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     interfaces = {
 	eth0.ipv4.addresses = [{
-		address = "191.4.204.200"; #change this for every host!!
+		address = "191.4.204.204"; #change this for every host!!
 		prefixLength = 23;
 		}];
 	};
@@ -37,7 +40,7 @@ in
     nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
   # Enable networking
-    networkmanager.enable = false;
+    networkmanager.enable = true;
   };
   #
   # Configure network proxy if necessary
@@ -126,25 +129,25 @@ in
   # Kubernetes Configuration
   # Master Node
 
-    networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
+  networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
 
-    services.kubernetes = {
-      roles = ["master" "node"];
+  services.kubernetes = {
+    roles = ["master" "node"];
       #roles = ["node"]; #For Node, comment the line above.
-      masterAddress = kubeMasterHostname;
-      apiserverAddress = "https://${kubeMasterHostname}:${toString kubeMasterAPIServerPort}";
-      easyCerts = true;
+    masterAddress = kubeMasterHostname;
+    apiserverAddress = "https://${kubeMasterHostname}:${toString kubeMasterAPIServerPort}";
+    easyCerts = true;
 	
-      apiserver = { #comment this if node
-        securePort = kubeMasterAPIServerPort; #comment this if node
-	advertiseAddress = kubeMasterIP; #comment this if node
-      };
+    apiserver = { #comment this if node
+      securePort = kubeMasterAPIServerPort; #comment this if node
+      advertiseAddress = kubeMasterIP; #comment this if node
+    };
 
       #kubelet.kubeconfig.server = api; #uncomment this if node
       #apiserverAddress = api; #uncomment this if node
 
-      addons.dns.enable = true;
-      kubelet.extraOpts = "--fail-swap-on=false";
+    addons.dns.enable = true;
+    kubelet.extraOpts = "--fail-swap-on=false";
     };
 
   ## For the connection between the node and master node run this aswell:
@@ -154,6 +157,15 @@ in
   virtualisation.docker = {
     enable = true;
   };
+
+  services.grafana = {
+    enable = true;
+		domain = "grafana.demo3";
+		port = 3000;
+		addr = "191.4.204.204";
+  };
+
+	
 
 
   system.stateVersion = "24.05"; # Did you read the comment?
