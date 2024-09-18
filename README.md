@@ -14,8 +14,9 @@ sudo nix build .#hmConfig.laptop.activationPackage && ./result
 
 
 - [ ] Package free5gc's gtp5g kernel module
-- [ ] Create a flake for OpenAirInterface
-    - [ ] package the modified version of asn1c
+- [-] Create a flake for OpenAirInterface
+    - [-] Package the modified version of asn1c
+        - [ ] Fix installation process
 - [x] Package a new version of srsRAN
     - [x] Create a flake of srsRAN
     - [x] Create a flake that compiles srsRAN in the src directory
