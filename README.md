@@ -17,7 +17,9 @@ sudo nix build .#hmConfig.laptop.activationPackage && ./result
 - [ ] Create a flake for OpenAirInterface
     - [ ] package the modified version of asn1c
 - [x] Package a new version of srsRAN
-    - [ ] Create a flake of srsRAN
+    - [x] Create a flake of srsRAN
+    - [x] Create a flake that compiles srsRAN in the src directory
+        - [-] Rewrite to be compatible with other architectures.
 - [-] Setup Kubernetes
 - [-] Setup Grafana
 - [ ] Setup Prometheus

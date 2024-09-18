@@ -45,12 +45,7 @@
       pname = "srsRAN-Project";
       version = "24_04";
 
-      src = pkgs.fetchFromGitHub {
-        owner = "srsran";
-        repo = "srsRAN_Project";
-        rev = "release_${version}";
-        sha256 = "ZgOeWpmcqQE7BYgiaVysnRkcJxD4fTCfKSQC5hIGTfk=";
-      };
+      src = [ ./. ];
 
       nativeBuildInputs = [
         pkgs.cmake
@@ -79,11 +74,12 @@
       configurePhase = ''
         mkdir -p build
         cd build
-        cmake .. -Wno-dev -Wfatal-errors -DBUILD_TESTS=OFF
+        cmake .. -Wno-dev -Wfatal-errors -DBUILD_TESTS=OFF -DCMAKE_C_FLAGS="-m64 -march=native" -DCMAKE_CXX_FLAGS="-m64 -march=native" -DCMAKE_SYSTEM_PROCESSOR=x86_64
       '';
 
       buildPhase = ''
-        make -j20
+				echo "Building for architecture: $(uname -m)"
+        make -j20 VERBOSE=1
       '';
 
       installPhase = ''
