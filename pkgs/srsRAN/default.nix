@@ -102,9 +102,12 @@ let
       make -j20
     '';
 
-#    installPhase = ''
-#			cp -r $src/build $out
-#    '';
+    installPhase = ''
+			mkdir -p $out/bin
+			mkdir -p $out/lib
+			
+			cp -r * $out/bin/.
+    '';
 
     cmakeFlags = [
       "-Wno-dev"

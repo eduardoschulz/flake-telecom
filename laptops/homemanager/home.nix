@@ -32,11 +32,9 @@ in {
 			neofetch
 			cargo
 			dunst
-			feh
 			fuse-common
 			freetype
 			gcc
-			gimp
 			git
 			unzip
 			virt-manager
@@ -83,7 +81,7 @@ in {
 		};
 
 		mouse = {
-			hide_when_typing = true;
+			hide_when_typing = false;
 		};
 		};
 

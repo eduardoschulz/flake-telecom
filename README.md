@@ -13,14 +13,13 @@ sudo nix build .#hmConfig.laptop.activationPackage && ./result
 ## TODO:
 
 
-- [ ] Package free5gc kernel module
+- [ ] Package free5gc's gtp5g kernel module
 - [ ] Create a flake for OpenAirInterface
-- [ ] Package openairinterface5g
-    - [ ] Package a different version of asn1c
-- [ ] Package a new version of srsRAN
-- [ ] Setup Kubernetes
-- [x] Setup Grafana
-	- [ ] fix renaming grafana demo3
+    - [ ] package the modified version of asn1c
+- [x] Package a new version of srsRAN
+    - [ ] Create a flake of srsRAN
+- [-] Setup Kubernetes
+- [-] Setup Grafana
 - [ ] Setup Prometheus
 - [ ] Figure out a way to passthrough argument into the config while building
 	- [ ] hostname

@@ -16,6 +16,7 @@ in
       ./hardware-configuration.nix
     ];
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ]; #enables flakes and nix commands without needing to pass an extra argument.
   # Bootloader.
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub.enable = true;
@@ -70,7 +71,7 @@ in
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "br";
-    variant = "";
+    variant = "thinkpad";
   };
 
   # Configure console keymap
@@ -100,6 +101,7 @@ in
      kompose
      kubectl
      kubernetes
+		 git
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -119,7 +121,7 @@ in
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+   networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
