@@ -12,7 +12,7 @@ sudo nix build .#hmConfig.laptop.activationPackage && ./result
 
 ## Building and Running srsRAN on Nix:
 
-There is 3 ways to build and execute srsRAN_Project on nix following this repo. The first way is to build it like a nixpkg, there is a default.nix inside pkgs, and running as a any other program. The second and third ways are based on flakes. The second way is to just run ´´´shell nix build ´´´ inside ´´´flakes/srsRAN´´´, this way you are going to be using the gitfetch function inside the flake to get the repo. Both the first and second ways have the disadvantage of not being able to modified the srsRAN contents. My recommendation it's to either use the second way or the third way.
+There is 3 ways to build and execute srsRAN_Project on nix following this repo. The first way is to build it like a nixpkg, there is a default.nix inside pkgs, and running as a any other program. The second and third ways are based on flakes. The second way is to just run ```nix build ``` inside ```flakes/srsRAN```, this way you are going to be using the gitfetch function inside the flake to get the repo. Both the first and second ways have the disadvantage of not being able to modified the srsRAN contents. My recommendation it's to either use the second way or the third way.
 
 The third way is the best way if you intend to change some of the code inside the project. Building is the same way but it doesn't fetch anything, you will need to copy the flake-src.nix file and paste it inside the cloned version of srsRAN.
 
