@@ -79,7 +79,7 @@
       configurePhase = ''
         mkdir -p build
         cd build
-        cmake .. -Wno-dev -Wfatal-errors -DBUILD_TESTS=OFF
+        cmake .. -DMARCH=x86-64-v3 -DBUILD_TESTS=OFF
       '';
 
       buildPhase = ''
