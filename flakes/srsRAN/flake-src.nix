@@ -43,7 +43,7 @@
     # Define the main project derivation
     main = pkgs.stdenv.mkDerivation rec {
       pname = "srsRAN-Project";
-      version = "24_04";
+      version = "24_04"; #change this depending on which version you are building
 
       src = [ ./. ];
 
@@ -74,7 +74,7 @@
       configurePhase = ''
         mkdir -p build
         cd build
-        cmake .. -Wno-dev -Wfatal-errors -DBUILD_TESTS=OFF -DCMAKE_C_FLAGS="-m64 -march=native" -DCMAKE_CXX_FLAGS="-m64 -march=native" -DCMAKE_SYSTEM_PROCESSOR=x86_64
+        cmake .. -DMARCH=x86-64-v3 -DBUILD_TESTS=OFF -DCMAKE_C_FLAGS="-m64 -march=native" -DCMAKE_CXX_FLAGS="-m64 -march=native" -DCMAKE_SYSTEM_PROCESSOR=x86_64
       '';
 
       buildPhase = ''
