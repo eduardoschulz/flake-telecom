@@ -65,7 +65,9 @@ cd results/bin/
 ## TODO:
 
 
-- [ ] Package free5gc's gtp5g kernel module
+- [x] Package free5gc's gtp5g kernel module
+    - [ ] Find out where the module is being installed
+    - [ ] Document configuration
 - [ ] Create a flake for OpenAirInterface
     - [ ] Package the modified version of asn1c
         - [ ] Fix installation process

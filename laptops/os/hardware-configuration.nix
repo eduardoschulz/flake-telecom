@@ -3,15 +3,21 @@
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, modulesPath, ... }:
 
+let 
+	gtp5g = pkgs.callPackage ../../pkgs/gtp5g/default.nix {
+		kernel = config.boot.kernelPackages.kernel;
+	};
+in
 {
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
+#			../../teste/default.nix
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [ gtp5g ];
+  boot.kernelModules = [ "kvm-intel" "gtp5g"];
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/0dda1568-ab43-4512-9080-4ec0976087fd";
