@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, kernel, ... }:
 let
   kubeMasterIP = "191.4.204.204"; 
   kubeMasterHostname = "api.kube";
@@ -100,7 +100,6 @@ in
      vim
      kompose
      kubectl
-     kubernetes
 		 git
   ];
 
@@ -135,11 +134,11 @@ in
 
   networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
 
-  services.kubernetes = {
+   services.kubernetes = {
     roles = ["master" "node"];
       #roles = ["node"]; #For Node, comment the line above.
-    masterAddress = kubeMasterHostname;
-    apiserverAddress = "https://${kubeMasterHostname}:${toString kubeMasterAPIServerPort}";
+     masterAddress = kubeMasterHostname;
+    /*apiserverAddress = "https://${kubeMasterHostname}:${toString kubeMasterAPIServerPort}";
     easyCerts = true;
 	
     apiserver = { #comment this if node
@@ -151,8 +150,8 @@ in
       #apiserverAddress = api; #uncomment this if node
 
     addons.dns.enable = true;
-    kubelet.extraOpts = "--fail-swap-on=false";
-    };
+    kubelet.extraOpts = "--fail-swap-on=false"; */
+    }; 
 
   ## For the connection between the node and master node run this aswell:
   # cat /var/lib/kubernetes/secrets/apitoken.secret #on master node
