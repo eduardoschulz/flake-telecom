@@ -75,7 +75,10 @@ cd results/bin/
     - [x] Create a flake of srsRAN
     - [x] Create a flake that compiles srsRAN in the src directory
         - [ ] Rewrite to be compatible with other architectures.
-- [ ] Setup Kubernetes
+- [x] Setup Kubernetes
+    - [ ] Write documentation for it
+    - [ ] Split kubernetes config from os config
+    - [ ] Read [kubenix](https://kubenix.org/)
 - [ ] Setup Grafana
 - [ ] Setup Prometheus
 - [ ] Figure out a way to passthrough argument into the config while building
