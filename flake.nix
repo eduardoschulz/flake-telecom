@@ -35,11 +35,15 @@
           modules = [
 
             laptops/os/configuration.nix
-            modules/kubernetes.nix
+            {
+                ipAddress = ipAddress;
+
+            }
+            /* modules/kubernetes.nix
             {
               k8sRole = k8sRole;
               ipAddress = ipAddress;
-            }
+            } */
           ];
         };
       };
