@@ -2,18 +2,21 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, kernel, ... }:
+{ config, pkgs, kernel, hostname, ipAddress, ... }:
 let
-  kubeMasterIP = "191.4.204.204"; 
-  kubeMasterHostname = "api.kube";
-  kubeMasterAPIServerPort = 6443;
-	hostname = "demo3";
-	ipAddress = "191.4.204.204";
+  _ = if hostname == null then
+      throw "Invalid hostname, use --arg hostname 'example'."
+  else if ipAddress == null then
+      throw "Invalid IP address, use --arg ipAddress '192.168.1.1'."
+  else
+      {
+      };
 in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../modules/kubernetes.nix #I don't know if this works because of the arguments
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ]; #enables flakes and nix commands without needing to pass an extra argument.
@@ -25,19 +28,23 @@ in
   boot.loader.grub.device = "nodev"; #must be set up to nodev if uefi
   boot.loader.grub.useOSProber = true;
 
+
+    /*
+        I'll probably define this networking block later under modules/networking.nix or something...
+    */
+
   networking = {
-    hostName = hostname; # Define your hostname.
+    hostName = hostname; 
     usePredictableInterfaceNames = true;
 
-    #wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     interfaces = {
 	eth0.ipv4.addresses = [{
-		address = ipAddress; #change this for every host!!
-		prefixLength = 23;
+		address = ipAddress; 
+		prefixLength = 23; # the right thing to do here is to receive a ip/netmask, and then splited but i'm not going to do that right now.
 		}];
 	};
     defaultGateway = {
-        address = "191.4.204.1";
+        address = "191.4.204.1"; 
 	interface = "eth0";
     };
     nameservers = [ "1.1.1.1" "8.8.8.8" ];
@@ -45,12 +52,14 @@ in
   # Enable networking
     networkmanager.enable = true;
   };
-  #
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Set your time zone.
+
+
+   /*
+        I'll probably define this as a locale.nix sometime.
+    */
+
+   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
 
   # Select internationalisation properties.
@@ -103,17 +112,7 @@ in
 		 git
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
    services.openssh.enable = true;
 
   # Open ports in the firewall.
@@ -122,40 +121,6 @@ in
   # Or disable the firewall altogether.
    networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-
-  # Kubernetes Configuration
-  # Master Node
-
-  networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
-
-   services.kubernetes = {
-    roles = ["master" "node"];
-      #roles = ["node"]; #For Node, comment the line above.
-     masterAddress = kubeMasterHostname;
-    /*apiserverAddress = "https://${kubeMasterHostname}:${toString kubeMasterAPIServerPort}";
-    easyCerts = true;
-	
-    apiserver = { #comment this if node
-      securePort = kubeMasterAPIServerPort; #comment this if node
-      advertiseAddress = kubeMasterIP; #comment this if node
-    };
-
-      #kubelet.kubeconfig.server = api; #uncomment this if node
-      #apiserverAddress = api; #uncomment this if node
-
-    addons.dns.enable = true;
-    kubelet.extraOpts = "--fail-swap-on=false"; */
-    }; 
-
-  ## For the connection between the node and master node run this aswell:
-  # cat /var/lib/kubernetes/secrets/apitoken.secret #on master node
-  # echo TOKEN | nixos-kubernetes-node-join #on worker node
 
   virtualisation.docker = {
     enable = true;
@@ -167,6 +132,13 @@ in
 		port = 3000;
 		addr = "191.4.204.204";
   };
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
 
 
   system.stateVersion = "24.05"; # Did you read the comment?
