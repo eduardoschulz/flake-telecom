@@ -16,7 +16,6 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../../modules/kubernetes.nix #I don't know if this works because of the arguments
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ]; #enables flakes and nix commands without needing to pass an extra argument.
