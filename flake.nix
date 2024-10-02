@@ -21,40 +21,21 @@
       };
       lib = nixpkgs.lib;
 
-      k8sRole = builtins.getEnv "K8S_ROLE" || null;
-      ipAddress = builtins.getEnv "IP_ADDRESS" || null;
 
     in {
       nixosConfigurations = {
-        eduardo = lib.nixosSystem {
-          inherit system;
-          modules = [ eduardo/os/configuration.nix ];
-        };
         laptop = lib.nixosSystem {
           inherit system;
           modules = [
-
             laptops/os/configuration.nix
-            {
-                ipAddress = ipAddress;
-
-            }
-            /* modules/kubernetes.nix
-            {
-              k8sRole = k8sRole;
-              ipAddress = ipAddress;
-            } */
+						modules/networking.nix
+						modules/locale.nix
+						modules/grafana.nix
+						modules/kubernetes.nix
           ];
         };
       };
       hmConfig = {
-        eduardo = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { inherit system; };
-          modules = [
-            catppuccin.homeManagerModules.catppuccin
-            eduardo/homemanager/home.nix
-          ];
-        };
         laptop = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; };
           modules = [

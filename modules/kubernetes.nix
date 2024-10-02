@@ -1,6 +1,7 @@
-{config, pkgs, k8sRole ? "disabled", ipaddr}:
+{...}:
 
 let 
+		k8sRole = "disabled";
 
     kubeMasterIP = "191.4.204.204";
     kubeMasterHostname = "api.kube";

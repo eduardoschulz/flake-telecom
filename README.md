@@ -1,5 +1,30 @@
 # A repository of flakes to setup the laboratory environment
 
+## Table of Contents:
+
+
+## Repository Structure
+
+```
+flake-telecom/
+├── README.md
+├── LICENSE
+├── .gitignore
+├── flakes/
+│   ├── srsRAN/
+|   |   ├──flake-src.nix
+|   |   └──flake.nix
+│   ├── oai/
+|   |   ├──flake-src.nix
+|   |   └──flake.nix
+├── tests/
+│   ├── test_main.py
+│   └── test_module1.py
+├── requirements.txt
+└── setup.py 
+
+```
+
 ## Setting up the lab laptops
 
 Before running any of these command change the hostname, ip addresses, kubernetes configuration and the hardware-configuration.nix file.
@@ -81,6 +106,7 @@ cd results/bin/
     - [ ] Read [kubenix](https://kubenix.org/)
 - [ ] Setup Grafana
 - [ ] Setup Prometheus
+- [ ] Split NixOS configurations into smaller modules
 - [ ] Figure out a way to passthrough argument into the config while building
 	- [ ] hostname
 	- [ ] ip addr
