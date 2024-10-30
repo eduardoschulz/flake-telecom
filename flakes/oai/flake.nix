@@ -11,44 +11,46 @@
 
     # Define googletest as a separate derivation
     asn1c = pkgs.stdenv.mkDerivation {
-      pname = "asn1c";
-      version = "v1.0.0";
-
-      src = pkgs.fetchFromGitHub {
-        owner = "mouse07410";
-        repo = "asn1c";
-        rev = "v1.0.0";
-        sha256 = "viOsU3lpGTIJuBLah1IjE6RMqyJha/PeP/lwlOWE1k8=";
-      };
-
-			
-			nativeBuildInputs = [ pkgs.perl pkgs.autoconf pkgs.automake pkgs.libtool pkgs.bison pkgs.flex];
-			configurePhase = ''
-				patchShebangs examples/crfc2asn1.pl
-				test -f configure || autoreconf -iv
-				sh configure
-			'';
-
-			buildPhase = ''
-				make
-			'';
-
-			installPhase = ''
-				mkdir -p $out/asn1c
-				mkdir -p $out/libs
-				cp -r asn1c $out/asn1c
-				cp -r * $out/libs
-
-			'';
+        pname = "asn1c";
+        version = "1.12.1";
 
 
-			meta = with pkgs.lib; {
-				homepage = "http://lionet.info/asn1c/compiler.html";
-				description = "Open Source ASN.1 Compiler";
-				license = licenses.bsd2;
-				platforms = platforms.unix;
-				maintainers = [ maintainers.numinit ];
-			};
+        src = pkgs.fetchFromGitHub {
+         owner = "mouse07410";
+         repo = "asn1c";
+         rev = "v1.0.0";
+         sha256 = "viOsU3lpGTIJuBLah1IjE6RMqyJha/PeP/lwlOWE1k8=";
+    };
+
+    nativeBuildInputs = [ pkgs.perl pkgs.autoconf pkgs.automake pkgs.libtool pkgs.bison pkgs.flex];
+
+
+    preConfigure = ''
+        patchShebangs examples/crfc2asn1.pl
+        '';
+
+
+
+    buildPhase = ''
+        if [ ! -f configure ]; then
+            autoreconf -iv
+        fi
+            chmod +x examples/crfc2asn1.pl # Ensure it's executable
+            ./configure --prefix=$out
+    '';
+
+    installPhase = ''
+        make
+        make install
+        '';
+
+    meta = with pkgs.lib; {
+        homepage = "http://lionet.info/asn1c/compiler.html";
+        description = "Open Source ASN.1 Compiler";
+        license = licenses.bsd2;
+        platforms = platforms.unix;
+        maintainers = [ maintainers.numinit ];
+    };
 
     };
 
@@ -62,6 +64,9 @@
       nativeBuildInputs = [
         pkgs.cmake
         pkgs.pkg-config
+        pkgs.openssl
+        pkgs.blas
+        asn1c
       ];
 
       buildInputs = [
@@ -80,15 +85,20 @@
         pkgs.libdwg
         pkgs.libdwarf
         pkgs.doxygen
-        asn1c  # Now we are using googletest as a dependency
+        pkgs.ninja
+        pkgs.openssl
+        pkgs.lapack
+        asn1c
       ];
 
 			/*ideally cmake should autodetect the cpu architecture but, at the moment this is not working*/
       configurePhase = ''
-				asn1c -v 
+        asn1c -v 
         mkdir -p build
         cd build
-        cmake .. -Wno-dev -Wfatal-errors -DBUILD_TESTS=OFF -DCMAKE_C_FLAGS="-m64 -march=native" -DCMAKE_CXX_FLAGS="-m64 -march=native" -DCMAKE_SYSTEM_PROCESSOR=x86_64
+        cmake .. -DASN1C_EXEC=${asn1c}/bin/asn1c -GNinja && ninja nr-softmodem nr-uesoftmodem nr-cuup params_libconfig coding rfsimulator ldpc
+
+        #cmake .. -Wno-dev -Wfatal-errors -DBUILD_TESTS=OFF -DCMAKE_C_FLAGS="-m64 -march=native" -DCMAKE_CXX_FLAGS="-m64 -march=native" -DCMAKE_SYSTEM_PROCESSOR=x86_64
       '';
 
       buildPhase = ''
