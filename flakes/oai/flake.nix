@@ -18,8 +18,8 @@
         src = pkgs.fetchFromGitHub {
          owner = "mouse07410";
          repo = "asn1c";
-         rev = "v1.0.0";
-         sha256 = "viOsU3lpGTIJuBLah1IjE6RMqyJha/PeP/lwlOWE1k8=";
+         rev = "940dd5fa9f3917913fd487b13dfddfacd0ded06e";
+         sha256 = "p9MAkwzeAL3I3PL0o15ABMluoorU1gcJbmU+s9DgPiY=";
     };
 
     nativeBuildInputs = [ pkgs.perl pkgs.autoconf pkgs.automake pkgs.libtool pkgs.bison pkgs.flex];
@@ -54,10 +54,36 @@
 
     };
 
+    simde = pkgs.stdenv.mkDerivation {
+        pname = "simde";
+        version = "mod";
+
+
+        src = pkgs.fetchFromGitHub {
+         owner = "simd-everywhere";
+         repo = "simde-no-tests";
+         rev = "1a09d3bc9de47c4d9a5daa23eb753d5322748201";
+         sha256 = "lZ37lVRN1SxkS9b04aj9UNZaRNuDUDIY+qOMAHu//9Y=";
+    };
+        installPhase = ''
+            mkdir -p $out/include/simde
+            cp -r * $out/include/simde
+            '';
+
+    meta = with pkgs.lib; {
+        homepage = "http://lionet.info/asn1c/compiler.html";
+        description = "Open Source ASN.1 Compiler";
+        license = licenses.bsd2;
+        platforms = platforms.unix;
+        maintainers = [ maintainers.numinit ];
+    };
+
+    };
+
     # Define the main project derivation
     main = pkgs.stdenv.mkDerivation rec {
-      pname = "srsRAN-Project";
-      version = "24_04";
+      pname = "OpenAirInterface";
+      version = "2.0.0";
 
       src = [ ./. ];
 
@@ -66,6 +92,11 @@
         pkgs.pkg-config
         pkgs.openssl
         pkgs.blas
+        pkgs.git
+        pkgs.simde
+        simde
+        pkgs.xxd
+        pkgs.zlib
         asn1c
       ];
 
@@ -89,21 +120,33 @@
         pkgs.openssl
         pkgs.lapack
         asn1c
+        pkgs.ncurses5
+        pkgs.cpm-cmake
       ];
 
+      preConfigure = ''
+          '';
+    
+#${pkgs.hostPlatform.system}
+    CFLAGS = "-march=x86-64-v3";
+#-mtune=native -m64 -march=x86-64-v3 
 			/*ideally cmake should autodetect the cpu architecture but, at the moment this is not working*/
-      configurePhase = ''
-        asn1c -v 
-        mkdir -p build
-        cd build
-        cmake .. -DASN1C_EXEC=${asn1c}/bin/asn1c -GNinja && ninja nr-softmodem nr-uesoftmodem nr-cuup params_libconfig coding rfsimulator ldpc
+#nr-uesoftmodem nr-cuup params_libconfig coding ldpc
 
-        #cmake .. -Wno-dev -Wfatal-errors -DBUILD_TESTS=OFF -DCMAKE_C_FLAGS="-m64 -march=native" -DCMAKE_CXX_FLAGS="-m64 -march=native" -DCMAKE_SYSTEM_PROCESSOR=x86_64
+
+             #cmake .. -DASN1C_EXEC=${asn1c}/bin/asn1c -DSIMDE_DIR=${simde}/include/simde -DCMAKE_C_FLAGS="-m64 -march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NO_NATIVE=1" -DCMAKE_CXX_FLAGS="-m64 -march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NO_NATIVE=1" -DCMAKE_SYSTEM_PROCESSOR=x86_64 -GNinja && ninja nr-softmodem 
+# -DSIMDE_DIR=${simde}/include/simde 
+      configurePhase = ''
+         mkdir -p build
+         cd build
+
+        gcc -march=native -dM -E - </dev/null > te 
+        cat te
+             cmake .. -DASN1C_EXEC=${asn1c}/bin/asn1c -DCMAKE_C_FLAGS=$CFLAGS -DCMAKE_CXX_FLAGS=$CFLAGS -GNinja && ninja nr-softmodem 
       '';
 
       buildPhase = ''
-				echo "Building for architecture: $(uname -m)"
-        make -j20 VERBOSE=1
+        make -j20
       '';
 
       installPhase = ''
