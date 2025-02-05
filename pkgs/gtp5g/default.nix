@@ -22,15 +22,13 @@ stdenv.mkDerivation rec {
     "KDIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
     "INSTALL_MOD_PATH=$(out)"
   ];
-#  installTargets = [ "install" ];
-	installPhase = ''
+  installPhase = ''
+    runHook preInstall
 
-		mkdir -p $out/lib/modules/$kernel.version/kernel/drivers/net
-		cp gtp5g.ko $out/lib/modules/$kernel.version/kernel/drivers/net/
-	'';
+    install *.ko -Dm444 -t $out/lib/modules/${kernel.modDirVersion}/kernel/drivers/gtp5g
 
-		#modprobe gtp5g
-
+    runHook postInstall
+  '';
 
   meta = with lib; {
     description = "GTPv5 Kernel Module";
