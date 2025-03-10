@@ -1,0 +1,38 @@
+.
+├── gtp5g
+│   └── default.nix
+├── laptops
+│   ├── flake.lock
+│   ├── flake.nix
+│   ├── homemanager
+│   │   ├── home.nix
+│   │   └── nvim
+│   │       ├── options.lua
+│   │       └── plugin
+│   │           ├── cmp.lua
+│   │           └── lsp.lua
+│   ├── modules
+│   │   ├── grafana.nix
+│   │   ├── kubernetes.nix
+│   │   ├── locale.nix
+│   │   └── networking.nix
+│   └── os
+│       ├── configuration.nix
+│       ├── hardware-configuration.nix
+│       └── hd.nix
+├── LICENSE
+├── oai
+│   ├── flake
+│   │   └── flake.nix
+│   └── pkg
+│       └── default.nix
+├── README.md
+├── srsRAN
+│   ├── flake
+│   │   ├── flake.nix
+│   │   └── flake-src.nix
+│   └── pkg
+│       └── default.nix
+└── tree
+
+13 directories, 22 files
