@@ -3,13 +3,13 @@
 
 stdenv.mkDerivation rec {
   pname = "gtp5g";
-  version = "1.0"; # Adjust version as necessary
+  version = "1.1"; # Adjust version as necessary
 
   src = fetchFromGitHub {
     owner = "free5gc";
     repo = "gtp5g";
-    rev = "v0.9.1";
-    sha256 = "n4YhgySVjceRRHxoaGd4Z+Rf2MgD6+upZTcS6xMLLJ0=";
+    rev = "v0.9.11";
+    sha256 = "sha256-jnme3cOKhNZ1mTVOpSKZioj6u0sh+ZGC1IuzsNsw5Gg=";
   };
 
  # patches = [ ./nix.patch ];
@@ -22,15 +22,13 @@ stdenv.mkDerivation rec {
     "KDIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
     "INSTALL_MOD_PATH=$(out)"
   ];
-#  installTargets = [ "install" ];
-	installPhase = ''
+  installPhase = ''
+    runHook preInstall
 
-		mkdir -p $out/lib/modules/$kernel.version/kernel/drivers/net
-		cp gtp5g.ko $out/lib/modules/$kernel.version/kernel/drivers/net/
-	'';
+    install *.ko -Dm444 -t $out/lib/modules/${kernel.modDirVersion}/kernel/drivers/gtp5g
 
-		#modprobe gtp5g
-
+    runHook postInstall
+  '';
 
   meta = with lib; {
     description = "GTPv5 Kernel Module";
@@ -39,4 +37,3 @@ stdenv.mkDerivation rec {
     platforms = platforms.linux;
   };
 }
-
