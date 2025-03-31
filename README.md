@@ -29,6 +29,10 @@ git commit -m "adding flake"
 nix build
 ```
 
+## Gtp5g module
+
+To build this module simply insert the configurations found in the hardware-configurations.nix found at laptops/os/.
+After adding to your NixOS configurations don't forget to run a nixos-rebuild switch and manually load the module with modprobe.
 
 
 ## Setting up the lab laptops
@@ -42,12 +46,8 @@ sudo nix build .#hmConfig.laptop.activationPackage && ./result
 
 ## TODO:
 - [x] Package free5gc's gtp5g kernel module
-    - [ ] Find out where the module is being installed
-    - [ ] Document configuration
 - [x] Package a new version of srsRAN
     - [x] Create a flake of srsRAN
     - [x] Create a flake that compiles srsRAN in the src directory
         - [ ] Rewrite to be compatible with other architectures.
 - [x] Setup Kubernetes
-- [ ] Setup Grafana
-- [ ] Setup Prometheus

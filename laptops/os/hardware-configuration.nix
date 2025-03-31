@@ -4,7 +4,7 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 let 
-	gtp5g = pkgs.callPackage ../../pkgs/gtp5g/default.nix {
+	gtp5g = pkgs.callPackage ../../gtp5g/new.nix {
 		kernel = config.boot.kernelPackages.kernel;
 	};
 in
@@ -16,8 +16,8 @@ in
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ gtp5g ];
-  boot.kernelModules = [ "kvm-intel" "gtp5g"];
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/0dda1568-ab43-4512-9080-4ec0976087fd";
